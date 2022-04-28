@@ -10,7 +10,10 @@ public class RPN {
     public static void main(String[] args) throws IOException {
         
         Pattern pattern = Pattern.compile("\\D+");
+
         Stack<Token> stack = new Stack<Token>();
+        ArrayList<Token> list = new ArrayList<Token>();
+
         String ch;
         int a, b;
         Token tk;
@@ -28,7 +31,7 @@ public class RPN {
             System.out.println("File not found");
         }
 
-        while ((ch = br.readLine()) != null && stack.peek().type != TokenType.EOF){
+        while ((ch = br.readLine()) != null){
 
             Matcher matcher = pattern.matcher(ch);
             boolean matchFound = matcher.find();
@@ -41,15 +44,22 @@ public class RPN {
                 tk = new Token(TokenType.MINUS, ch);
             } else if (ch.equals("/")) {
                 tk = new Token(TokenType.SLASH, ch);
-            } else if (matchFound){
+            } else if (matchFound) {
                 tk = new Token(TokenType.EOF, ch);
             } else {
                 tk = new Token(TokenType.NUM, ch);
             }
 
-            stack.push(tk);
-            
-            System.out.println(tk); //Imprimir a lista de tokens reconhecida
+            list.add(tk);
+        }
+
+        fr.close();
+
+        list.forEach(System.out::println); // Imprimir a lista de tokens reconhecida
+
+        for (Token tokenAtual : list){
+
+            stack.push(tokenAtual);
 
             if (stack.peek().type != TokenType.NUM && stack.peek().type != TokenType.EOF) {
                 Token token = stack.pop();
@@ -68,16 +78,13 @@ public class RPN {
                 } else if (signal == TokenType.SLASH) {
                     stack.push(new Token(TokenType.NUM, Integer.toString(b / a)));
                 }
-
+            } else if (stack.peek().type == TokenType.EOF) {
+                System.out.println("Error: Unexpected character: " + stack.pop().lexeme);
+                System.exit(1);
             }
         }
-
-        if(stack.peek().type == TokenType.EOF){
-            System.out.println("Error: Unexpected character: " + stack.pop().lexeme);
-        } else {
-            System.out.println("Saida: " + stack.pop().lexeme);
-        }
-
-        fr.close();
+        
+        System.out.println("Saida: " + stack.pop().lexeme);
+        System.exit(0);
     }
 }
