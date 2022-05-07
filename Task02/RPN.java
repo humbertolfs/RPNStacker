@@ -1,3 +1,5 @@
+package Task02;
+
 import java.io.*;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -18,14 +20,12 @@ public class RPN {
         int a, b;
         Token tk;
         TokenType signal;
-        
-        stack.push(new Token(TokenType.NUM, "000")); //Inicializa a pilha para a condição do while
 
         FileReader fr = null;
         BufferedReader br = null;
 
         try {
-            fr = new FileReader("Calc1.stk");
+            fr = new FileReader("Task02/Calc1.stk");
             br = new BufferedReader(fr);
         } catch (FileNotFoundException fe) {
             System.out.println("File not found");
