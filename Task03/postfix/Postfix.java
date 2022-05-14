@@ -28,6 +28,7 @@ import java.util.List;
 import Task03.postfix.ast.AstPrinter;
 import Task03.postfix.ast.Expr;
 import Task03.postfix.interpreter.Interpreter;
+import Task03.postfix.interpreter.InterpreterError;
 import Task03.postfix.lexer.LexError;
 import Task03.postfix.lexer.Scanner;
 import Task03.postfix.lexer.Token;
@@ -50,8 +51,8 @@ public class Postfix {
 	 * @throws IOException
 	 */
 	public static void main(String[] args) throws IOException {
-//		args = new String [1];
-//		args [0] = "../StackerPrograms/program/Calc1.stk";
+		args = new String [1];
+		args [0] = "Task03/postfix/Calc1.stk";
 //		args [1] = "../StackerPrograms/program/Calc2.stk";
 
 		debugging = false; // for interpretation phases
@@ -115,6 +116,10 @@ public class Postfix {
 			if(debugging) {
 				printAST(expr);
 			}
+
+			interpreter.env.put("y", "8");
+			interpreter.env.put("x", "3");
+
 			System.out.println(interpreter.interp(expr));
 		} catch (LexError e) {
 			error("Lex", e.getMessage());
@@ -122,6 +127,10 @@ public class Postfix {
 		}	
 		catch (ParserError e) {
 			error("Parser", e.getMessage());
+			hasError = true;
+		}
+		catch (InterpreterError e) {
+			error("Interpreter", e.getMessage());
 			hasError = true;
 		}	
 	}

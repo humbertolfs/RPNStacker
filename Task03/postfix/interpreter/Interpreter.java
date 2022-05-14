@@ -42,6 +42,15 @@ public class Interpreter implements Expr.Visitor<Integer> {
 	}
 
 	@Override
+	public Integer visitVariableExpr(Expr.Variable expr) {
+		if (!this.env.containsKey(expr.envKey)) {
+			throw new InterpreterError(expr.envKey + " cannot be resolved");
+		}
+
+		return Integer.parseInt(this.env.get(expr.envKey));
+	}
+
+	@Override
 	public Integer visitBinopExpr(Expr.Binop expr) {
 		int left = evaluate(expr.left);
 		int right = evaluate(expr.right); 

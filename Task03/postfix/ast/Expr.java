@@ -26,6 +26,7 @@ public abstract class Expr {
 	// visitors for expressions
 	public interface Visitor<T> {
 		T visitNumberExpr(Number expr);
+		T visitVariableExpr(Variable expr);
 		T visitBinopExpr(Binop expr);
 	}
 
@@ -43,6 +44,19 @@ public abstract class Expr {
 		}
 
 		public final String value;
+	}
+
+	public static class Variable extends Expr {
+		public Variable(String envKey) {
+			this.envKey = envKey;
+		}
+
+		@Override
+		public <T> T accept(Visitor<T> visitor) {
+			return visitor.visitVariableExpr(this);
+		}
+
+		public final String envKey;
 	}
 
 	// Binop expression

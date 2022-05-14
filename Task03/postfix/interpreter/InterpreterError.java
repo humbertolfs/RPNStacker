@@ -14,19 +14,15 @@
  *     http://www.cin.ufpe.br/~hemr/
  * ******************************************************************/
 
-package Task03.postfix.lexer;
+package Task03.postfix.interpreter;
 
 /**
  * @author Henrique Rebelo
  */
-public enum TokenType {
+public class InterpreterError extends RuntimeException{
+	private static final long serialVersionUID = 1L;
 
-	// Literals.
-	NUM, VAR,
-
-	// Single-character tokens for operations.
-	MINUS, PLUS, SLASH, STAR,
-	
-	EOF
-
+	public InterpreterError(String msg) {
+		super(msg);
+	}
 }
